@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -24,15 +24,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Create and start virtual environment
+      - name: Install dependencies into a specific folder
         run: |
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
@@ -45,6 +39,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
       - name: Download artifact from build job
@@ -59,3 +56,4 @@ jobs:
           app-name: 'ai-7-el31-mentor'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_29AA8091A8E24D758B8749CB1DFB5683 }}
+          app-settings-json: '{ "SCM_DO_BUILD_DURING_DEPLOYMENT": "false" }'
