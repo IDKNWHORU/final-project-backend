@@ -7,4 +7,4 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 # ASGI 애플리케이션을 Uvicorn 워커를 사용하여 Gunicorn으로 실행합니다.
-gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker
+gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker --chdir /home/site/wwwroot
