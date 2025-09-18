@@ -56,4 +56,3 @@ jobs:
           app-name: 'ai-7-el31-mentor'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_29AA8091A8E24D758B8749CB1DFB5683 }}
-          app-settings-json: '{ "SCM_DO_BUILD_DURING_DEPLOYMENT": "false" }'
